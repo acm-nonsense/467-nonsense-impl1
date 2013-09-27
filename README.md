@@ -25,6 +25,7 @@ To get started and run the example, simply:
 
 	git clone https://github.com/steveherschleb/sdk_javascript.git
 	cd sdk_javascript
+	npm install
 	node alchemyapi.js {API_KEY}
 	node app.js
 
