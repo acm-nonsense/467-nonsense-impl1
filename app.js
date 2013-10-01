@@ -46,7 +46,7 @@ function example(req, res) {
 }
 
 function entities(req, res, output) {
-	alchemyapi.entities('text', demo_text, function(error, response) {
+	alchemyapi.entities('text', demo_text,{ 'sentiment':1 }, function(error, response) {
 		output['entities'] = { text:demo_text, response:JSON.stringify(response,null,4), results:response['entities'] };
 		sentiment(req, res, output);
 	});
@@ -54,7 +54,7 @@ function entities(req, res, output) {
 
 
 function sentiment(req, res, output) {
-	alchemyapi.sentiment('html', demo_html, function(error, response) {
+	alchemyapi.sentiment('html', demo_html, {}, function(error, response) {
 		output['sentiment'] = { html:demo_html, response:JSON.stringify(response,null,4), results:response['docSentiment'] };
 		keywords(req, res, output);
 	});
@@ -62,7 +62,7 @@ function sentiment(req, res, output) {
 
 
 function keywords(req, res, output) {
-	alchemyapi.keywords('text', demo_text, function(error, response) {
+	alchemyapi.keywords('text', demo_text, { 'sentiment':1 }, function(error, response) {
 		output['keywords'] = { text:demo_text, response:JSON.stringify(response,null,4), results:response['keywords'] };
 		concepts(req, res, output);
 	});
@@ -70,7 +70,7 @@ function keywords(req, res, output) {
 
 
 function concepts(req, res, output) {
-	alchemyapi.concepts('text', demo_text, function(error, response) {
+	alchemyapi.concepts('text', demo_text, { 'showSourceText':1 }, function(error, response) {
 		output['concepts'] = { text:demo_text, response:JSON.stringify(response,null,4), results:response['concepts'] };
 		relations(req, res, output);
 	});
@@ -78,7 +78,7 @@ function concepts(req, res, output) {
 
 
 function relations(req, res, output) {
-	alchemyapi.relations('text', demo_text, function(error, response) {
+	alchemyapi.relations('text', demo_text, {}, function(error, response) {
 		output['relations'] = { text:demo_text, response:JSON.stringify(response,null,4), results:response['relations'] };
 		category(req, res, output);
 	});
@@ -86,7 +86,7 @@ function relations(req, res, output) {
 
 
 function category(req, res, output) {
-	alchemyapi.category('text', demo_text, function(error, response) {
+	alchemyapi.category('text', demo_text, {}, function(error, response) {
 		output['category'] = { text:demo_text, response:JSON.stringify(response,null,4), results:response };
 		language(req, res, output);
 	});
@@ -94,7 +94,7 @@ function category(req, res, output) {
 
 
 function language(req, res, output) {
-	alchemyapi.language('text', demo_text, function(error, response) {
+	alchemyapi.language('text', demo_text, {}, function(error, response) {
 		output['language'] = { text:demo_text, response:JSON.stringify(response,null,4), results:response };
 		author(req, res, output);
 	});
@@ -102,7 +102,7 @@ function language(req, res, output) {
 
 
 function author(req, res, output) {
-	alchemyapi.author('url', demo_url, function(error, response) {
+	alchemyapi.author('url', demo_url, {}, function(error, response) {
 		output['author'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response };
 		feeds(req, res, output);
 	});
@@ -110,7 +110,7 @@ function author(req, res, output) {
 
 
 function feeds(req, res, output) {
-	alchemyapi.feeds('url', demo_url, function(error, response) {
+	alchemyapi.feeds('url', demo_url, {}, function(error, response) {
 		output['feeds'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response['feeds'] };
 		res.render('example',output);
 	});

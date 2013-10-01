@@ -5,7 +5,17 @@ var ENDPOINTS = {};
 var BASE_URL = 'http://access.alchemyapi.com/calls';
 var API_KEY = '';
 
-//Check if file was called directly
+/** 
+  * Checks if file is called directly, and then writes the API key to api_key.txt if it's included in the args 
+  *
+  * Note: if you don't have an API key, register for one at: http://www.alchemyapi.com/api/register.html
+  *
+  * INPUT:
+  * Your API Key (sent as a command line argument)
+  *
+  * OUTPUT:
+  * none
+*/  
 if (require.main === module) {
 	//file was called directly from command line to set the key
 	if (process.argv[2]) {
@@ -13,15 +23,32 @@ if (require.main === module) {
 		fs.writeFile(__dirname + '/api_key.txt',process.argv[2], function(err) {
 			if (err) {
 				console.log('Error, unable to write key file: ' + err);
+				process.exit(1);
 			} else {
 				console.log('AlchemyAPI key: ' + process.argv[2] + ' successfully written to api_key.txt');
+				process.exit(0);
 			}
-			process.exit(0);
 		});
+	} else {
+		console.log('Are you trying to set the key? Make sure to use: node alchemyapi.js YOUR_KEY_HERE');
+		process.exit(1);
 	}
 }
 
 
+/** 
+  *	Initializes the SDK so it can send requests to AlchemyAPI for analysis.
+  *	It loads the API key from api_key.txt and configures the endpoints.
+  *	This function will be called automatically from the endpoint wrappers when needed.
+  *
+  * Note: if you don't have an API key, register for one at: http://www.alchemyapi.com/api/register.html
+  *
+  * INPUT:
+  * none
+  *
+  * OUTPUT:
+  * none
+*/  
 function init() {
 	//Setup the endpoints
 	ENDPOINTS['sentiment'] = {};
@@ -100,7 +127,24 @@ function init() {
 }
 
 
-exports.sentiment = function(flavor, data, callback) {
+/**
+  *	Calculates the sentiment for text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/sentiment-analysis/
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/sentiment-analysis/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	showSourceText -> 0: disabled (default), 1: enabled
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.sentiment = function(flavor, data, options, callback) {
+	options = options || {}
 	
 	if (API_KEY == '') {
 		init();
@@ -115,13 +159,35 @@ exports.sentiment = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.sentiment_targeted = function(flavor, data, target, callback) {
+/**
+  *	Calculates the targeted sentiment for text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/sentiment-analysis/
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/sentiment-analysis/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	target -> the word or phrase to run sentiment analysis on.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	showSourceText	-> 0: disabled, 1: enabled
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.sentiment_targeted = function(flavor, data, target, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -137,13 +203,40 @@ exports.sentiment_targeted = function(flavor, data, target, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
+/**
+  *	Extracts the entities for text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/entity-extraction/ 
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/entity-extraction/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	disambiguate -> disambiguate entities (i.e. Apple the company vs. apple the fruit). 0: disabled, 1: enabled (default)
+  *	linkedData -> include linked data on disambiguated entities. 0: disabled, 1: enabled (default) 
+  *	coreference -> resolve coreferences (i.e. the pronouns that correspond to named entities). 0: disabled, 1: enabled (default)
+  *	quotations -> extract quotations by entities. 0: disabled (default), 1: enabled.
+  *	sentiment -> analyze sentiment for each entity. 0: disabled (default), 1: enabled. Requires 1 additional API transction if enabled.
+  *	showSourceText -> 0: disabled (default), 1: enabled 
+  *	maxRetrieve -> the maximum number of entities to retrieve (default: 50)
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.entities = function(flavor, data, options, callback) {
+	options = options || {}
 
-exports.entities = function(flavor, data, callback) {
 	if (API_KEY == '') {
 		init();
 	}
@@ -157,13 +250,37 @@ exports.entities = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.keywords = function(flavor, data, callback) {
+/**
+  *	Extracts the keywords from text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/keyword-extraction/
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/keyword-extraction/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *			
+  *	Available Options:
+  *	keywordExtractMode -> normal (default), strict
+  *	sentiment -> analyze sentiment for each keyword. 0: disabled (default), 1: enabled. Requires 1 additional API transaction if enabled.
+  *	showSourceText -> 0: disabled (default), 1: enabled.
+  *	maxRetrieve -> the max number of keywords returned (default: 50)
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.keywords = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -177,13 +294,31 @@ exports.keywords = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.concepts = function(flavor, data, callback) {
+/**
+  *	Tags the concepts for text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/concept-tagging/
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/concept-tagging/ 
+  *	
+  *	Available Options:
+  *	maxRetrieve -> the maximum number of concepts to retrieve (default: 8)
+  *	linkedData -> include linked data, 0: disabled, 1: enabled (default)
+  *	showSourceText -> 0:disabled (default), 1: enabled
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.concepts = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -197,13 +332,34 @@ exports.concepts = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.author = function(flavor, data, callback) {
+/**
+  *	Extracts the author from a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/author-extraction/
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/author-extraction/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *
+  *	Availble Options:
+  *	none
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.author = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -217,13 +373,33 @@ exports.author = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
-
-
-exports.category = function(flavor, data, callback) {
+/**
+  *	Categorizes the text for text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/text-categorization/
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/text-categorization/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	showSourceText -> 0: disabled (default), 1: enabled
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object.
+*/
+exports.category = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -237,13 +413,43 @@ exports.category = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.relations = function(flavor, data, callback) {
+/**
+  *	Extracts the relations for text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/relation-extraction/ 
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/relation-extraction/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	sentiment -> 0: disabled (default), 1: enabled. Requires one additional API transaction if enabled.
+  *	keywords -> extract keywords from the subject and object. 0: disabled (default), 1: enabled. Requires one additional API transaction if enabled.
+  *	entities -> extract entities from the subject and object. 0: disabled (default), 1: enabled. Requires one additional API transaction if enabled.
+  *	requireEntities -> only extract relations that have entities. 0: disabled (default), 1: enabled.
+  *	sentimentExcludeEntities -> exclude full entity name in sentiment analysis. 0: disabled, 1: enabled (default)
+  *	disambiguate -> disambiguate entities (i.e. Apple the company vs. apple the fruit). 0: disabled, 1: enabled (default)
+  *	linkedData -> include linked data with disambiguated entities. 0: disabled, 1: enabled (default).
+  *	coreference -> resolve entity coreferences. 0: disabled, 1: enabled (default)  
+  *	showSourceText -> 0: disabled (default), 1: enabled.
+  *	maxRetrieve -> the maximum number of relations to extract (default: 50, max: 100)
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.relations = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -257,13 +463,34 @@ exports.relations = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.language = function(flavor, data, callback) {
+/**
+  *	Detects the language for text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/api/language-detection/ 
+  *	For the docs, please refer to: http://www.alchemyapi.com/products/features/language-detection/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *
+  *	Available Options:
+  *	none
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.language = function(flavor, data, options,callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -277,13 +504,35 @@ exports.language = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.text_clean = function(flavor, data, callback) {
+/**
+  *	Extracts the cleaned text (removes ads, navigation, etc.) for text, a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/text-extraction/
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/text-extraction/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	useMetadata -> utilize meta description data, 0: disabled, 1: enabled (default)
+  *	extractLinks -> include links, 0: disabled (default), 1: enabled.
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.text_clean = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -297,13 +546,34 @@ exports.text_clean = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.text_raw = function(flavor, data, callback) {
+/**
+  *	Extracts the raw text (includes ads, navigation, etc.) for a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/text-extraction/ 
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/text-extraction/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	none
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.text_raw = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -317,13 +587,34 @@ exports.text_raw = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.text_title = function(flavor, data, callback) {
+/**
+  *	Extracts the title for a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/text-extraction/ 
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/text-extraction/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e. text, url or html.
+  *	data -> the data to analyze, either the text, the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	useMetadata -> utilize title info embedded in meta data, 0: disabled, 1: enabled (default) 
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.text_title = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -337,13 +628,34 @@ exports.text_title = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
-exports.microformats = function(flavor, data, callback) {
+/**
+  *	Parses the microformats for a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/microformats-parsing/
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/microformats-parsing/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e.  url or html.
+  *	data -> the data to analyze, either the the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	
+  *	Available Options:
+  *	none
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.microformats = function(flavor, data, options, callback) {
+	options = options || {}
+	
 	if (API_KEY == '') {
 		init();
 	}
@@ -357,13 +669,34 @@ exports.microformats = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
+/**
+  *	Detects the RSS/ATOM feeds for a URL or HTML.
+  *	For an overview, please refer to: http://www.alchemyapi.com/products/features/feed-detection/ 
+  *	For the docs, please refer to: http://www.alchemyapi.com/api/feed-detection/
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call, i.e.  url or html.
+  *	data -> the data to analyze, either the the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *
+  *	Available Options:
+  *	none
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
+exports.feeds = function(flavor, data, options, callback) {
+	options = options || {}
 
-exports.feeds = function(flavor, data, callback) {
 	if (API_KEY == '') {
 		init();
 	}
@@ -377,18 +710,31 @@ exports.feeds = function(flavor, data, callback) {
 					'&' + flavor + '=' + encodeURIComponent(data) +
 					'&outputMode=json';
 
+		for (var key in options) {
+			url += '&' + key + '=' + options[key].toString();
+		}
+
 		analyze(url, callback);
 	}
 };
 
 
-
+/**
+  *	HTTP Request wrapper that is called by the endpoint functions. This function is not intended to be called through an external interface. 
+  *	It makes the call, then converts the returned JSON string into a Python object. 
+  *	
+  *	INPUT:
+  *	url -> the full URI encoded url
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Python object. 
+*/
 function analyze(url, callback) {
 	request.post({ url:url }, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			callback(error,JSON.parse(body));
 		} else {
-			callback(error,{ status:'ERROR', statusInfo:'invalid-server-response' });
+			callback(error,{ status:'ERROR', statusInfo:'invalid server response' });
 		}
 	});
 }

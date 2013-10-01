@@ -20,7 +20,8 @@
 		{#entities.results}
 			<p><strong>Text:</strong> {text}<br/>
 			<strong>Type:</strong> {type}<br/>
-			<strong>Relevance:</strong> {relevance}</p>
+			<strong>Relevance:</strong> {relevance}<br/>
+			<strong>Sentiment:</strong> {sentiment.type} ({sentiment.score})</p>
 		{/entities.results}
 		
 		<hr>
@@ -54,7 +55,8 @@
 		<h3>Keywords</h3>
 		{#keywords.results}
 			<p><strong>Text:</strong> {text}<br/>
-			<strong>Relevance:</strong> {relevance}</p>
+			<strong>Relevance:</strong> {relevance}<br/>
+			<strong>Sentiment:</strong> {sentiment.type} ({sentiment.score})</p>
 		{/keywords.results}
 		
 		<hr>
@@ -168,7 +170,7 @@
 		<h3>Feeds</h3>
 		<p>
 			{#feeds.results}
-				<strong>Feed:</strong> {feed}<br/>
+				<strong>Feed:</strong> <a href='{feed}' target='_blank'>{feed}</a><br/>
 			{/feeds.results}
 		</p>
 	
