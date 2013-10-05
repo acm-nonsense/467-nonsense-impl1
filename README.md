@@ -23,14 +23,14 @@ To use AlchemyAPI, you'll need to obtain an API key and attach that key to all r
 
 To get started and run the example, simply:
 
-	git clone https://github.com/steveherschleb/sdk_javascript.git
+	git clone https://github.com/AlchemyAPI/sdk_javascript.git
 	cd sdk_javascript
 	npm install
-	node alchemyapi.js {API_KEY}
+	node alchemyapi.js YOUR_KEY_HERE
 	node app.js
 
 
-Just replace {API_KEY} with your key, and you should be good to go.
+Just replace YOUR_KEY_HERE with your key, and you should be good to go.
 
 The example will be available at: http://localhost:3000
 
