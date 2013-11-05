@@ -70,8 +70,8 @@ function AlchemyAPI() {
 	  *	
 	  *	INPUT:
 	  *	url -> the full URI encoded url
-	  * params -> the call parameters, both required and optional
-	  * callback -> the callback function
+	  *	params -> the call parameters, both required and optional
+	  *	callback -> the callback function
 	  *
 	  *	OUTPUT:
 	  *	The response, already converted from JSON to a Javascript object. 
@@ -163,7 +163,7 @@ AlchemyAPI.ENDPOINTS['microformats']['html'] = '/html/HTMLGetMicroformatData';
   *	flavor -> which version of the call, i.e. text, url or html.
   *	data -> the data to analyze, either the text, the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *	
   *	Available Options:
   *	disambiguate -> disambiguate entities (i.e. Apple the company vs. apple the fruit). 0: disabled, 1: enabled (default)
@@ -199,7 +199,7 @@ AlchemyAPI.prototype.entities = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. text, url or html.
   *	data -> the data to analyze, either the text, the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *			
   *	Available Options:
   *	keywordExtractMode -> normal (default), strict
@@ -232,7 +232,7 @@ AlchemyAPI.prototype.keywords = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. text, url or html.
   *	data -> the data to analyze, either the text, the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *
   *	Available Options:
   *	maxRetrieve -> the maximum number of concepts to retrieve (default: 8)
@@ -264,7 +264,7 @@ AlchemyAPI.prototype.concepts = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. text, url or html.
   *	data -> the data to analyze, either the text, the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *
   *	Available Options:
   *	showSourceText -> 0: disabled (default), 1: enabled
@@ -295,7 +295,7 @@ AlchemyAPI.prototype.sentiment = function(flavor, data, options, callback) {
   *	data -> the data to analyze, either the text, the url or html code.
   *	target -> the word or phrase to run sentiment analysis on.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *	
   *	Available Options:
   *	showSourceText	-> 0: disabled, 1: enabled
@@ -328,7 +328,7 @@ AlchemyAPI.prototype.sentiment_targeted = function(flavor, data, target, options
   *	flavor -> which version of the call, i.e. url or html.
   *	data -> the data to analyze, either the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *	
   *	Available Options:
   *	useMetadata -> utilize meta description data, 0: disabled, 1: enabled (default)
@@ -359,7 +359,7 @@ AlchemyAPI.prototype.text = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. url or html.
   *	data -> the data to analyze, either the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *	
   *	Available Options:
   *	none
@@ -389,7 +389,7 @@ AlchemyAPI.prototype.text_raw = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. url or html.
   *	data -> the data to analyze, either the the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *
   *	Availble Options:
   *	none
@@ -419,7 +419,7 @@ AlchemyAPI.prototype.author = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. text, url or html.
   *	data -> the data to analyze, either the text, the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *
   *	Available Options:
   *	none
@@ -449,7 +449,7 @@ AlchemyAPI.prototype.language = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. url or html.
   *	data -> the data to analyze, either the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *	
   *	Available Options:
   *	useMetadata -> utilize title info embedded in meta data, 0: disabled, 1: enabled (default) 
@@ -479,7 +479,7 @@ AlchemyAPI.prototype.title = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. text, url or html.
   *	data -> the data to analyze, either the text, the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *	
   *	Available Options:
   *	sentiment -> 0: disabled (default), 1: enabled. Requires one additional API transaction if enabled.
@@ -518,7 +518,7 @@ AlchemyAPI.prototype.relations = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e. text, url or html.
   *	data -> the data to analyze, either the text, the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *	
   *	Available Options:
   *	showSourceText -> 0: disabled (default), 1: enabled
@@ -548,7 +548,7 @@ AlchemyAPI.prototype.category = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e.  url or html.
   *	data -> the data to analyze, either the the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *
   *	Available Options:
   *	none
@@ -578,7 +578,7 @@ AlchemyAPI.prototype.feeds = function(flavor, data, options, callback) {
   *	flavor -> which version of the call, i.e.  url or html.
   *	data -> the data to analyze, either the the url or html code.
   *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
-  * callback -> the callback function for this async function	
+  *	callback -> the callback function for this async function	
   *	
   *	Available Options:
   *	none
