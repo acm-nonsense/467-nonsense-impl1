@@ -21,26 +21,11 @@
 			<p><strong>Text:</strong> {text}<br/>
 			<strong>Type:</strong> {type}<br/>
 			<strong>Relevance:</strong> {relevance}<br/>
-			<strong>Sentiment:</strong> {sentiment.type} ({sentiment.score})</p>
+			<strong>Sentiment:</strong> {sentiment.type} {#sentiment.score}({sentiment.score}){/sentiment.score}</p>
 		{/entities.results}
 		
 		<hr>
-
-		<h1>Sentiment Analysis</h1>
-		<p>For more information on sentiment analysis: <a href='http://www.alchemyapi.com/products/features/sentiment-analysis/' target='_blank'>http://www.alchemyapi.com/products/features/sentiment-analysis/</a><br/>
-		For the docs: <a href='http://www.alchemyapi.com/api/sentiment-analysis/' target='_blank'>http://www.alchemyapi.com/api/sentiment-analysis/</a></p>
-
-		<h3>Processed HTML</h3>
-		<p>{sentiment.html}</p>
 		
-		<h3>Response Object</h3>
-		<textarea rows='10' class='form-control'>{sentiment.response}</textarea>
-	
-		<h3>Document Sentiment</h3>
-		<p><strong>Type:</strong> {sentiment.results.type}<br/>
-		<strong>Score:</strong> {sentiment.results.score}</p>
-		
-		<hr>
 
 		<h1>Keyword Extraction</h1>
 		<p>For more information on keyword extraction: <a href='http://www.alchemyapi.com/products/features/keyword-extraction/' target='_blank'>http://www.alchemyapi.com/products/features/keyword-extraction/</a><br/>
@@ -56,10 +41,11 @@
 		{#keywords.results}
 			<p><strong>Text:</strong> {text}<br/>
 			<strong>Relevance:</strong> {relevance}<br/>
-			<strong>Sentiment:</strong> {sentiment.type} ({sentiment.score})</p>
+			<strong>Sentiment:</strong> {sentiment.type} {#sentiment.score}({sentiment.score}){/sentiment.score}</p>
 		{/keywords.results}
 		
 		<hr>
+
 
 		<h1>Concept Tagging</h1>
 		<p>For more information on concept tagging: <a href='http://www.alchemyapi.com/products/features/concept-tagging/' target='_blank'>http://www.alchemyapi.com/products/features/concept-tagging/</a><br/>
@@ -78,7 +64,86 @@
 		{/concepts.results}
 		
 		<hr>
+		
+		
+		<h1>Sentiment Analysis</h1>
+		<p>For more information on sentiment analysis: <a href='http://www.alchemyapi.com/products/features/sentiment-analysis/' target='_blank'>http://www.alchemyapi.com/products/features/sentiment-analysis/</a><br/>
+		For the docs: <a href='http://www.alchemyapi.com/api/sentiment-analysis/' target='_blank'>http://www.alchemyapi.com/api/sentiment-analysis/</a></p>
 
+		<h3>Processed HTML</h3>
+		<p>{sentiment.html}</p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{sentiment.response}</textarea>
+	
+		<h3>Document Sentiment</h3>
+		<p><strong>Type:</strong> {sentiment.results.type}<br/>
+		{#sentiment.results.score}<strong>Score:</strong> {sentiment.results.score}{/sentiment.results.score}</p>
+		
+		<hr>
+
+		<h1>Text Extraction</h1>
+		<p>For more information on text extraction: <a href='http://www.alchemyapi.com/products/features/text-extraction/' target='_blank'>http://www.alchemyapi.com/products/features/text-extraction/</a><br/>
+		For the docs: <a href='http://www.alchemyapi.com/api/text-extraction/' target='_blank'>http://www.alchemyapi.com/api/text-extraction/</a></p>
+
+		<h3>Processed URL</h3>
+		<p><a href='{text.url}'>{text.url}</a></p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{text.response}</textarea>
+	
+		<h3>Text</h3>
+		<p><strong>Text:</strong><br/>
+		{text.results.text}</p>
+	
+		<hr>
+
+		<h1>Author Extraction</h1>
+		<p>For more information on author extraction: <a href='http://www.alchemyapi.com/products/features/author-extraction/' target='_blank'>http://www.alchemyapi.com/products/features/author-extraction/</a><br/>
+		For the docs: <a href='http://www.alchemyapi.com/api/author-extraction/' target='_blank'>http://www.alchemyapi.com/api/author-extraction/</a></p>
+
+		<h3>Processed URL</h3>
+		<p><a href='{author.url}'>{author.url}</a></p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{author.response}</textarea>
+	
+		<h3>Author</h3>
+		<p><strong>Author:</strong> {author.results.author}</p>
+	
+		<hr>
+
+		<h1>Language Detection</h1>
+		<p>For more information on language detection: <a href='http://www.alchemyapi.com/products/features/language-detection/' target='_blank'>http://www.alchemyapi.com/products/features/language-detection/</a><br/>
+		For the docs: <a href='http://www.alchemyapi.com/api/language-detection/' target='_blank'>http://www.alchemyapi.com/api/language-detection/</a></p>
+
+		<h3>Processed Text</h3>
+		<p>{language.text}</p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{language.response}</textarea>
+	
+		<h3>Language</h3>
+		<p><strong>Language:</strong> {language.results.language}<br/>
+		<strong>ISO-639-1:</strong> {language.results.iso-639-1}<br/>
+		<strong>Native Speakers:</strong> {language.results.native-speakers}</p>
+	
+		<hr>
+
+		<h1>Title Extraction</h1>
+		<p>For the docs: <a href='http://www.alchemyapi.com/api/text/urls.html#title/' target='_blank'>http://www.alchemyapi.com/api/text/urls.html#title</a></p>
+
+		<h3>Processed URL</h3>
+		<p>{title.url}</p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{title.response}</textarea>
+	
+		<h3>Title</h3>
+		<p><strong>Title:</strong> {title.results.title}</p>
+	
+		<hr>
+		
 		<h1>Relation Extraction</h1>
 		<p>For more information on relation extraction: <a href='http://www.alchemyapi.com/products/features/relation-extraction/' target='_blank'>http://www.alchemyapi.com/products/features/relation-extraction/</a><br/>
 		For the docs: <a href='http://www.alchemyapi.com/api/relation-extraction/' target='_blank'>http://www.alchemyapi.com/api/relation-extraction/</a></p>
@@ -125,38 +190,6 @@
 	
 		<hr>
 
-		<h1>Language Detection</h1>
-		<p>For more information on language detection: <a href='http://www.alchemyapi.com/products/features/language-detection/' target='_blank'>http://www.alchemyapi.com/products/features/language-detection/</a><br/>
-		For the docs: <a href='http://www.alchemyapi.com/api/language-detection/' target='_blank'>http://www.alchemyapi.com/api/language-detection/</a></p>
-
-		<h3>Processed Text</h3>
-		<p>{language.text}</p>
-		
-		<h3>Response Object</h3>
-		<textarea rows='10' class='form-control'>{language.response}</textarea>
-	
-		<h3>Language</h3>
-		<p><strong>Language:</strong> {language.results.language}<br/>
-		<strong>ISO-639-1:</strong> {language.results.iso-639-1}<br/>
-		<strong>Native Speakers:</strong> {language.results.native-speakers}</p>
-	
-		<hr>
-
-		<h1>Author Extraction</h1>
-		<p>For more information on author extraction: <a href='http://www.alchemyapi.com/products/features/author-extraction/' target='_blank'>http://www.alchemyapi.com/products/features/author-extraction/</a><br/>
-		For the docs: <a href='http://www.alchemyapi.com/api/author-extraction/' target='_blank'>http://www.alchemyapi.com/api/author-extraction/</a></p>
-
-		<h3>Processed URL</h3>
-		<p><a href='{author.url}'>{author.url}</a></p>
-		
-		<h3>Response Object</h3>
-		<textarea rows='10' class='form-control'>{author.response}</textarea>
-	
-		<h3>Author</h3>
-		<p><strong>Author:</strong> {author.results.author}</p>
-	
-		<hr>
-
 		<h1>Feed Detection</h1>
 		<p>For more information on feed detection: <a href='http://www.alchemyapi.com/products/features/feed-detection/' target='_blank'>http://www.alchemyapi.com/products/features/feed-detection/</a><br/>
 		For the docs: <a href='http://www.alchemyapi.com/api/feed-detection/' target='_blank'>http://www.alchemyapi.com/api/feed-detection/</a></p>
@@ -174,6 +207,25 @@
 			{/feeds.results}
 		</p>
 	
+		<hr>
+
+		<h1>Microformats Parsing</h1>
+		<p>For more information on microformats parsing: <a href='http://www.alchemyapi.com/products/features/microformats-parsing/' target='_blank'>http://www.alchemyapi.com/products/features/microformats-parsing/</a><br/>
+		For the docs: <a href='http://www.alchemyapi.com/api/microformats-parsing/' target='_blank'>http://www.alchemyapi.com/api/microformats-parsing/</a></p>
+
+		<h3>Processed URL</h3>
+		<p><a href='{microformats.url}'>{microformats.url}</a></p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{microformats.response}</textarea>
+	
+		<h3>Microformats</h3>
+		<p>
+			{#microformats.results}
+				<strong>Field:</strong> {field}<br/>
+				<strong>Data:</strong> {data}<br/><br/>
+			{/microformats.results}
+		</p>
 	
 	</div>
 {/content}
