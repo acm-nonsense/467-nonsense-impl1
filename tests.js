@@ -107,7 +107,7 @@ function sentiment() {
 //Targeted Sentiment
 function sentiment_targeted() {
 	console.log('Checking targeted sentiment . . . ');
-	alchemyapi.sentiment_targeted('random', test_text, null, null, function(response) {
+	alchemyapi.sentiment_targeted('text', test_text, null, null, function(response) {
 		assert.equal(response['status'],'ERROR');	//did not supply the target
 
 		alchemyapi.sentiment_targeted('random', test_text, 'heart', null, function(response) {
