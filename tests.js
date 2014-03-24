@@ -324,14 +324,52 @@ function microformats() {
 			alchemyapi.microformats('url', test_url, null, function(response) {
 				assert.equal(response['status'],'OK');
 				console.log('Microformat tests complete!\n');
-				
-				console.log('\n\n**** All tests are complete! ****\n');
+        taxonomy();
 			});
 		});
 	});
 }
 
 
+//Taxonomy
+function taxonomy() {
+	console.log('Checking taxonomy . . . ');
+	alchemyapi.taxonomy('text', test_text, null, function(response) {
+		assert.equal(response['status'],'OK'); //only works for html and urls
+
+		alchemyapi.taxonomy('html', test_html, {url:'test'}, function(response) {
+			assert.equal(response['status'],'OK');
+		
+			alchemyapi.taxonomy('url', test_url, null, function(response) {
+				assert.equal(response['status'],'OK');
+				console.log('Taxonomy tests complete!\n');
+        combined();
+			});
+		});
+	});
+}
+
+
+//Combined
+function combined() {
+	console.log('Checking combined . . . ');
+	alchemyapi.combined('url', test_url, null, function(response) {
+		assert.equal(response['status'],'OK');
+		console.log('Combined tests complete!\n');
+    image();
+	});
+}
+
+//Image
+function image() {
+	console.log('Checking image . . . ');
+	alchemyapi.image('url', test_url, null, function(response) {
+		assert.equal(response['status'],'OK');
+		console.log('Image tests complete!\n');
+		
+		console.log('\n\n**** All tests are complete! ****\n');
+	});
+}
 
 
 
