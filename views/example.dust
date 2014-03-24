@@ -226,6 +226,83 @@
 				<strong>Data:</strong> {data}<br/><br/>
 			{/microformats.results}
 		</p>
-	
+
+    <hr>
+
+		<h1>Taxonomy Parsing</h1>
+		<p>
+		For the docs: <a href='http://www.alchemyapi.com/api/' target='_blank'>http://www.alchemyapi.com/api/</a></p>
+
+		<h3>Processed URL</h3>
+		<p><a href='{taxonomy.url}'>{taxonomy.url}</a></p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{taxonomy.response}</textarea>
+
+		<h3>Taxonomy</h3>
+
+		{#taxonomy.results.taxonomy}
+			<p><strong>Label:</strong> {label}<br/>
+			<strong>Score:</strong> {score}<br/>
+			<strong>Confident:</strong> {confident}</p>
+		{/taxonomy.results.taxonomy}
+
+		<hr>
+
+		<h1>Image Parsing</h1>
+		<p>
+		For the docs: <a href='http://www.alchemyapi.com/api/' target='_blank'>http://www.alchemyapi.com/api/</a></p>
+
+		<h3>Processed URL</h3>
+		<p><a href='{image.url}'>{image.url}</a></p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{image.response}</textarea>
+
+		<h3>Image</h3>
+
+		<p><strong>Image:</strong> {image.results.image}<br/>
+
+      <hr>
+
+		<h1>Combined Parsing</h1>
+		<p>
+		For the docs: <a href='http://www.alchemyapi.com/api/' target='_blank'>http://www.alchemyapi.com/api/</a></p>
+
+		<h3>Processed URL</h3>
+		<p><a href='{combined.url}'>{combined.url}</a></p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{combined.response}</textarea>
+
+		<h3>Combined</h3>
+
+		<p><strong>Category:</strong> {combined.results.category.category}<br/>
+		<strong>Score:</strong> {combined.results.category.score}</p>
+
+		{#combined.results.entities}
+      <h4>Entity</h4>
+			<p><strong>Text:</strong> {text}<br/>
+			<strong>Type:</strong> {type}<br/>
+			<strong>Relevance:</strong> {relevance}<br/>
+			<strong>Sentiment:</strong> {sentiment.type} {#sentiment.score}({sentiment.score}){/sentiment.score}</p>
+		{/combined.results.entities}
+
+		{#combined.results.concepts}
+      <h4>Concept</h4>
+			<p><strong>Text:</strong> {text}<br/>
+			<strong>Relevance:</strong> {relevance}</p>
+		{/combined.results.concepts}
+
+		{#combined.results.keywords}
+      <h4>Keyword</h4>
+			<p><strong>Text:</strong> {text}<br/>
+			<strong>Relevance:</strong> {relevance}<br/>
+			<strong>Sentiment:</strong> {sentiment.type} {#sentiment.score}({sentiment.score}){/sentiment.score}</p>
+		{/combined.results.keywords}
+
+		<hr>
+
+
 	</div>
 {/content}

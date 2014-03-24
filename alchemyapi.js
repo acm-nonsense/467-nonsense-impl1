@@ -169,6 +169,14 @@ AlchemyAPI.ENDPOINTS['feeds']['html'] = '/html/HTMLGetFeedLinks';
 AlchemyAPI.ENDPOINTS['microformats'] = {};
 AlchemyAPI.ENDPOINTS['microformats']['url']  = '/url/URLGetMicroformatData';
 AlchemyAPI.ENDPOINTS['microformats']['html'] = '/html/HTMLGetMicroformatData';
+AlchemyAPI.ENDPOINTS['taxonomy'] = {};
+AlchemyAPI.ENDPOINTS['taxonomy']['url'] = '/url/URLGetRankedTaxonomy';
+AlchemyAPI.ENDPOINTS['taxonomy']['text'] = '/text/TextGetRankedTaxonomy';
+AlchemyAPI.ENDPOINTS['taxonomy']['html'] = '/html/HTMLGetRankedTaxonomy';
+AlchemyAPI.ENDPOINTS['combined'] = {};
+AlchemyAPI.ENDPOINTS['combined']['url'] = '/url/URLGetCombinedData';
+AlchemyAPI.ENDPOINTS['image'] = {};
+AlchemyAPI.ENDPOINTS['image']['url'] = '/url/URLGetImage';
 
 
 
@@ -616,4 +624,85 @@ AlchemyAPI.prototype.microformats = function(flavor, data, options, callback) {
 	}
 };
 
+
+/**
+  *	Categorized through the taxonomy call for text, HTML, or a URL.
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call (currently, only 'url' is supported)
+  *	data -> the data to analyze, either the the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	callback -> the callback function for this async function	
+  *	
+  *	Available Options:
+  *	showSourceText -> 0: disabled (default), 1: enabled.
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Javascript object. 
+*/
+AlchemyAPI.prototype.taxonomy = function(flavor, data, options, callback) {
+	options = options || {}
+
+	//Add the data to the options and analyze
+	options[flavor] = data;
+	this.analyze(AlchemyAPI.ENDPOINTS['taxonomy'][flavor], options, callback);
+};
+
+
+/**
+  *	Extracts the combined call for a URL.
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call (currently, only 'url' is supported)
+  *	data -> the data to analyze, either the the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	callback -> the callback function for this async function	
+  *	
+  *	Available Options:
+  *	extract -> VALUE,VALUE,VALUE,... (possible VALUEs: page-image,entity,keyword,title,author,taxonomy,concept,relation,doc-sentiment)
+  *	extractMode -> (only applies when 'page-image' VALUE passed to 'extract' option) 
+  *	trust-metadata: less CPU-intensive, less accurate
+  *	always-infer: more CPU-intensive, more accurate
+  *	disambiguate -> whether to disambiguate detected entities, 0: disabled, 1: enabled (default)
+  *	linkedData -> whether to include Linked Data content links with disambiguated entities, 0: disabled, 1: enabled (default). disambiguate must be enabled to use this.
+  *	coreference -> whether to he/she/etc coreferences into detected entities, 0: disabled, 1: enabled (default)
+  *	quotations -> whether to enable quotations extraction, 0: disabled (default), 1: enabled
+  *	sentiment -> whether to enable entity-level sentiment analysis, 0: disabled (default), 1: enabled. Requires one additional API transaction if enabled.
+  *	showSourceText -> 0: disabled (default), 1: enabled.
+  *	maxRetrieve -> maximum number of named entities to extract (default: 50)
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Javascript object. 
+*/
+AlchemyAPI.prototype.combined = function(flavor, data, options, callback) {
+	options = options || {}
+
+	//Add the data to the options and analyze
+	options[flavor] = data;
+	this.analyze(AlchemyAPI.ENDPOINTS['combined'][flavor], options, callback);
+};
+
+
+/**
+  *	Extracts images from a URL.
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call (currently, only 'url' is supported)
+  *	data -> the data to analyze, either the the url or html code.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	callback -> the callback function for this async function	
+  *	
+  *	Available Options:
+  *	extractMode -> trust-metadata: less CPU-intensive and less accurate, always-infer: more CPU-intensive and more accurate
+  *
+  *	OUTPUT:
+  *	The response, already converted from JSON to a Javascript object. 
+*/
+AlchemyAPI.prototype.image = function(flavor, data, options, callback) {
+	options = options || {}
+
+	//Add the data to the options and analyze
+	options[flavor] = data;
+	this.analyze(AlchemyAPI.ENDPOINTS['image'][flavor], options, callback);
+};
 

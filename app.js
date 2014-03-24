@@ -156,6 +156,28 @@ function feeds(req, res, output) {
 function microformats(req, res, output) {
 	alchemyapi.microformats('url', demo_url, {}, function(response) {
 		output['microformats'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response['microformats'] };
+		taxonomy(req, res, output);
+	});
+}
+
+
+function taxonomy(req, res, output) {
+	alchemyapi.taxonomy('url', demo_url, {}, function(response) {
+		output['taxonomy'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response };
+		combined(req, res, output);
+	});
+}
+
+function combined(req, res, output) {
+	alchemyapi.combined('url', demo_url, {}, function(response) {
+		output['combined'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response };
+		image(req, res, output);
+	});
+}
+
+function image(req, res, output) {
+	alchemyapi.image('url', demo_url, {}, function(response) {
+		output['image'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response };
 		res.render('example',output);
 	});
 }
