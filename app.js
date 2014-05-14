@@ -178,6 +178,13 @@ function combined(req, res, output) {
 function image(req, res, output) {
 	alchemyapi.image('url', demo_url, {}, function(response) {
 		output['image'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response };
+		image_keywords(req, res, output);
+	});
+}
+
+function image_keywords(req, res, output) {
+	alchemyapi.image_keywords('url', demo_url, {}, function(response) {
+		output['image_keywords'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response };
 		res.render('example',output);
 	});
 }

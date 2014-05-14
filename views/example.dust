@@ -265,6 +265,26 @@
 
       <hr>
 
+		<h1>Image Keywords Tagging</h1>
+		<p>
+		For the docs: <a href='http://www.alchemyapi.com/api/' target='_blank'>http://www.alchemyapi.com/api/</a></p>
+
+		<h3>Processed URL</h3>
+		<p><a href='{image_keywords.url}'>{image_keywords.url}</a></p>
+		
+		<h3>Response Object</h3>
+		<textarea rows='10' class='form-control'>{image_keywords.response}</textarea>
+
+		<h3>Keywords</h3>
+
+		{#image_keywords.results.imageKeywords}
+      <h4>Keyword</h4>
+			<p><strong>Text:</strong> {text}<br/>
+			<strong>Score:</strong> {score}<br/>
+		{/image_keywords.results.imageKeywords}
+
+      <hr>
+
 		<h1>Combined Parsing</h1>
 		<p>
 		For the docs: <a href='http://www.alchemyapi.com/api/' target='_blank'>http://www.alchemyapi.com/api/</a></p>

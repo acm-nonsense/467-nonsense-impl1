@@ -343,9 +343,31 @@ function taxonomy() {
 			alchemyapi.taxonomy('url', test_url, null, function(response) {
 				assert.equal(response['status'],'OK');
 				console.log('Taxonomy tests complete!\n');
-        combined();
+        image();
 			});
 		});
+	});
+}
+
+
+//Image
+function image() {
+	console.log('Checking image . . . ');
+	alchemyapi.image('url', test_url, null, function(response) {
+		assert.equal(response['status'],'OK');
+		console.log('Image tests complete!\n');
+    image_keywords();
+	});
+}
+
+
+//Image Keywords
+function image_keywords() {
+	console.log('Checking image keywords . . . ');
+	alchemyapi.image_keywords('url', test_url, null, function(response) {
+		assert.equal(response['status'],'OK');
+		console.log('Image keywords tests complete!\n');
+    combined();
 	});
 }
 
@@ -356,20 +378,8 @@ function combined() {
 	alchemyapi.combined('url', test_url, null, function(response) {
 		assert.equal(response['status'],'OK');
 		console.log('Combined tests complete!\n');
-    image();
-	});
-}
-
-//Image
-function image() {
-	console.log('Checking image . . . ');
-	alchemyapi.image('url', test_url, null, function(response) {
-		assert.equal(response['status'],'OK');
-		console.log('Image tests complete!\n');
 		
 		console.log('\n\n**** All tests are complete! ****\n');
 	});
 }
-
-
 
