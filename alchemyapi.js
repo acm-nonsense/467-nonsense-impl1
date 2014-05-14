@@ -177,6 +177,9 @@ AlchemyAPI.ENDPOINTS['combined'] = {};
 AlchemyAPI.ENDPOINTS['combined']['url'] = '/url/URLGetCombinedData';
 AlchemyAPI.ENDPOINTS['image'] = {};
 AlchemyAPI.ENDPOINTS['image']['url'] = '/url/URLGetImage';
+AlchemyAPI.ENDPOINTS['image_keywords'] = {};
+AlchemyAPI.ENDPOINTS['image_keywords']['url'] = '/url/URLGetRankedImageKeywords';
+AlchemyAPI.ENDPOINTS['image_keywords']['image'] = '/image/ImageGetRankedImageKeywords';
 
 
 
@@ -704,5 +707,31 @@ AlchemyAPI.prototype.image = function(flavor, data, options, callback) {
 	//Add the data to the options and analyze
 	options[flavor] = data;
 	this.analyze(AlchemyAPI.ENDPOINTS['image'][flavor], options, callback);
+};
+
+
+/**
+  *	Tags image with keywords
+  *	
+  *	INPUT:
+  *	flavor -> which version of the call (currently, only 'url' or 'image' is supported)
+  *	data -> the URL to the data to analyze.
+  *	options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+  *	callback -> the callback function for this async function	
+  *	
+  *	Available Options:
+  *	extractMode -> trust-metadata: less CPU-intensive and less accurate, always-infer: more CPU-intensive and more accurate
+  *	imagePostMode -> not-raw: pass an unencoded image file with "image=URI_ENCODED_DATA"; raw: pass an unencoded image file using POST ('image' flavor only).
+  *
+  *	OUTPUT:
+  *	The response of keywords, already converted from JSON to a Javascript object. 
+*/
+AlchemyAPI.prototype.image_keywords =
+    function(flavor, data, options, callback) {
+	options = options || {}
+
+	//Add the data to the options and analyze
+	options[flavor] = data;
+	this.analyze(AlchemyAPI.ENDPOINTS['image_keywords'][flavor], options, callback);
 };
 
