@@ -23,6 +23,9 @@ var assert = require('assert');
 var test_text = 'Bob broke my heart, and then made up this silly sentence to test the Node.js SDK';  
 var test_html = '<html><head><title>The best SDK Test | AlchemyAPI</title></head><body><h1>Hello World!</h1><p>My favorite language is Javascript</p></body></html>';
 var test_url = 'http://www.nytimes.com/2013/07/13/us/politics/a-day-of-friction-notable-even-for-a-fractious-congress.html?_r=0';
+var test_image = './emaxfpo.jpg';
+
+
 
 //start the test sequence
 entities();
@@ -356,15 +359,25 @@ function image() {
 	alchemyapi.image('url', test_url, null, function(response) {
 		assert.equal(response['status'],'OK');
 		console.log('Image tests complete!\n');
-    image_keywords();
+    url_image_keywords();
 	});
 }
 
 
 //Image Keywords
+function url_image_keywords() {
+	console.log('Checking url image keywords . . . ');
+	alchemyapi.image_keywords('url', test_url, null, function(response) {
+		assert.equal(response['status'],'OK');
+		console.log('Image keywords tests complete!\n');
+    image_keywords();
+	});
+}
+
+//Image Keywords with post
 function image_keywords() {
 	console.log('Checking image keywords . . . ');
-	alchemyapi.image_keywords('url', test_url, null, function(response) {
+	alchemyapi.image_keywords('image', test_image, null, function(response) {
 		assert.equal(response['status'],'OK');
 		console.log('Image keywords tests complete!\n');
     combined();
