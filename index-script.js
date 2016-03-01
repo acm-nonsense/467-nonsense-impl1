@@ -82,7 +82,7 @@ var topics = [];
         })
         
         .on('click', function(d,i) {
-            window.location.href = 'http://127.0.0.1:54071/folder.html#'+topics[i];
+            window.location.href = 'folder.html#'+topics[i];
         })
 
     myChart.transition()
