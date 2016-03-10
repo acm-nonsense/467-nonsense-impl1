@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizing Piazza</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Visualizing Piazza</h1>
+    <div id="chart"></div>
+      <p></p>
+    <div class = "row">
+        <div class = "four columns" style="background-color: #F8F8F8; text-align: center;"><h4 style="margin-top=1vh; margin-bottom=3vh;">Most Discussed</h4><h5 id="mostDiscussed">MP 1</h5><br></div>
+        <div class = "four columns" style="background-color: #F8F8F8; text-align: center;"><h4 style="margin-top=1vh; margin-bottom=3vh;">Least Liked</h4><h5 id="leastLiked">MP 8</h5><br></div>
+        <div class = "four columns" style="background-color: #F8F8F8; text-align: center;"><h4 style="margin-top=1vh; margin-bottom=3vh;">Most Liked</h4><h5 id="mostLiked">Logistics</h5><br></div>
+    </div>
+    <p></p>
+    <h2>Implementing</h2>
+    <div class="row">
+        
+        <div class = "six columns" style="background-color: #F8F8F8; text-align: center;"><h4 style="margin-top:2vh; margin-bottom:3vh;">Scraping Piazza</h4><p style="margin-right:10px; margin-left:10px;">Piazza famously does not have a publicly accessible API. This left us with options of either reverse engineering the API (very difficult) or using Selenium to automate a browser (very slow). We chose the Selenium appoach and found that we had to babysit the script to ensure that it would progress as a result of how the Piazza UI worked. A couple of hours later, we had the data we needed</p><br></div>
+        
+        <div class = "six columns" style="background-color: #F8F8F8; text-align: center;"><h4 style="margin-top:2vh; margin-bottom:3vh;">Natural Language Processing</h4><p style="margin-right:10px; margin-left:10px;">We used AlchemyAPI for our sentiment Analysis. We had 11 thousand requestions that needed to be made. This far over the free account ratelimit for AlchemyAPI. We got around this by simply submitting the requests slowly over a period of time.</p><br><br></div>
+        
+        <div class = "six columns" style="background-color: #F8F8F8; text-align: center; margin-top: 3vh;"><h4 style="margin-top=2vh; margin-bottom=3vh;">Visualization</h4><p style="margin-right:10px; margin-left:10px;">Given the amount of time remaining after the other two parts, we had to distill our visualiztion into the most core features. We're using D3.js to render the vis.</p><br></div>
+      </div></div>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="index-script.js"></script>
+</body>
+</html>
